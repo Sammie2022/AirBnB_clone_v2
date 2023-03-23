@@ -5,12 +5,14 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+
 Base = declarative_base()
 
 
-class BaseModel:
+class BaseModel():
     """A base class for all hbnb models"""
-    id = Column(String(60), primary_key=True, nullable=False)
+
+    id = Column(String(60), primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -21,14 +23,16 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            if 'updated at' in kwargs:
+            if 'updated_at' in kwargs:
                 kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                                                         '%Y-%m-%dT%H:%M:%S.%f'
+                                                         )
             else:
                 self.updated_at = datetime.now()
             if 'created_at' in kwargs:
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                                                         '%Y-%m-%dT%H:%M:%S.%f'
+                                                         )
             else:
                 self.created_at = datetime.now()
             if 'id' not in kwargs:
@@ -60,8 +64,8 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """public instance method to delete the current instance
-from the storage (models.storage)
-"""
+        """public instance method to delete the current instance from
+        the storage (models.storage)
+        """
         from models import storage
         storage.delete(self)
