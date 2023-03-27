@@ -43,7 +43,7 @@ class TestConsole(unittest.TestCase):
         """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(["console.py"])
-        self.assertEqual(p.total_errors, 0, "fix Pep8")
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
     def test_docstrings_in_console(self):
         """checking for docstrings"""
@@ -193,6 +193,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.update(" + my_id + ", name)")
             self.assertNotEqual("** value missing **\n",
                                 f.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
