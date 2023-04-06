@@ -1,18 +1,32 @@
 #!/usr/bin/env bash
-# Script that sets up the web servers for the deployment of web_static.
+# a script to install and conf nginx
 
+#install nginx
 sudo apt-get update
-sudo apt-get -y install nginx
-sudo mkdir -p /data/web_static/shared/
+sudo apt-get install nginx -y
+
+#creating repositories
 sudo mkdir -p /data/web_static/releases/test/
-echo "<html>
-     <head>
-     </head>
-     <body>
-	Holberton School
-     </body>
-</html>" >> /data/web_static/releases/test/index.html
+sudo mkdir -p /data/web_static/shared/
+
+#creating a dummy html page
+echo "<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
+
+#creating a symbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -R $USER:$USER /data/
-sudo sed -i "26i \\\tlocation /hbnb_static/ {\n\t\talias /data/web-static/current//;\n\t}\n" /etc/nginx/sites-available/default
+
+#changing directory name
+sudo chown -R ubuntu:ubuntu /data/
+
+#setting up the page to be served
+sudo sed -i '/server_name _;/a \ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n' /etc/nginx/sites-available/default
+
+#restart the server
 sudo service nginx restart
